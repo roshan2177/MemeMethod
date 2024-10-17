@@ -1,4 +1,8 @@
 # MemeMethod
+Teammates:
+Name: Zakiy Manigo UNI: ztm2106
+Name: Roshan Prakash UNI: rp3187
+
 Output of sample input from first draft of code:
 ('KEYWORD', 'create')
 ('KEYWORD', 'meme')
@@ -85,3 +89,13 @@ INT: Represents integer literals like 1024, 50.
 STRING: Represents string literals like "we all love animals", "of course".
 
 OP: Represents operators, in this case, just x.
+
+Running Everything:
+
+make program an executable: chmod +x run_meme_lexer.sh
+
+this is how to run the lexer with shell script:
+./run_meme_lexer.sh <sample_input.txt>
+
+such that
+./run_meme_lexer.sh Sample_meme_code.txt

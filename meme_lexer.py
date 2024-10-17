@@ -58,7 +58,7 @@ class Scanner:
         return self.tokens
 
 # Example usage:
-source_code = """
+sample_input1 = """
 create meme
     background blue
     load pictures dogs cats grass
@@ -76,8 +76,86 @@ create meme
 save images
 """
 
-scanner = Scanner(source_code)
+sample_input2 = """
+create meme
+    background black
+    load pictures stars moon
+    size 1920 x 1080
+    border dashed
+        color
+    style panorama
+    text "night sky beauty"
+        placement center
+        overlay no
+    count 5
+save images
+"""
+
+sample_input3 = """
+create meme
+    background white
+    load pictures car bike road
+    size 640 x 480
+    border none
+    style grid
+    text "on the go"
+        placement top-right
+        overlay yes
+    text "fast life"
+        placement bottom-right
+        overlay no
+    count 20
+save images
+"""
+
+sample_input4 = """
+create meme
+    background green
+    load pictures tree river mountain
+    size 1024 x 768
+    border solid
+        color
+    style landscape
+    text "nature's beauty"
+        placement bottom
+        overlay yes
+    count 15
+save images
+"""
+
+sample_input5 = """
+create meme
+    background green
+    load pictures cat dog tree
+    size 1024 / 768
+    border dashed
+    style grid
+save images
+"""
+print("Sample 1")
+scanner = Scanner(sample_input1)
 tokens = scanner.scan()
+print("\n")
+
+# print("Sample 2")
+# scanner = Scanner(sample_input2)
+# tokens = scanner.scan()
+# print("\n")
+
+# print("Sample 3")
+# scanner = Scanner(sample_input3)
+# tokens = scanner.scan()
+# print("\n")
+
+# print("Sample 4")
+# scanner = Scanner(sample_input4)
+# tokens = scanner.scan()
+# print("\n")
+
+# print("Sample 5")
+# scanner = Scanner(sample_input5)
+# tokens = scanner.scan()
+# print("\n")
 
 for token in tokens:
     print(token)
