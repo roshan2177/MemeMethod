@@ -27,7 +27,7 @@
 #     echo "Error occurred during lexical analysis."
 #     exit 1
 # fi
-
+"""
 #!/bin/bash
 
 # Run the lexer Python script with standard input
@@ -41,3 +41,23 @@ else
     echo "Error occurred during lexical analysis."
     exit 1
 fi
+"""
+#!/bin/bash
+
+# Check if the source file is provided as an argument
+if [ "$#" -ne 1 ]; then
+    echo "Usage: ./scanner.sh <source_file>"
+    exit 1
+fi
+
+# Run the lexer Python script with the provided source file
+python3 meme_lexer.py "$1"
+
+# Check if the lexer execution was successful
+if [ $? -eq 0 ]; then
+    echo "Lexical analysis completed successfully."
+else
+    echo "Error occurred during lexical analysis."
+    exit 1
+fi
+
