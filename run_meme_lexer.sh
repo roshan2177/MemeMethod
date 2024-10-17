@@ -1,43 +1,17 @@
-# #!/bin/bash
-
-# # Check if the input file is provided as an argument
-# if [ $# -ne 1 ]; then
-#     echo "Usage: $0 <input_file>"
-#     exit 1
-# fi
-
-# # Input file to be processed
-# INPUT_FILE=$1
-
-# # Check if the file exists
-# if [ ! -f "$INPUT_FILE" ]; then
-#     echo "Error: File '$INPUT_FILE' not found."
-#     exit 1
-# fi
-
-# # Run the lexer Python script with the input file
-# # with the lexer script is named 'meme_lexer.py'
-# # and the input file is passed as a command-line argument
-# python3 meme_lexer.py "$INPUT_FILE"
-
-# # Check if the lexer execution was successful
-# if [ $? -eq 0 ]; then
-#     echo "Lexical analysis completed successfully."
-# else
-#     echo "Error occurred during lexical analysis."
-#     exit 1
-# fi
-
 #!/bin/bash
 
-# Run the lexer Python script with standard input
-# Redirect input to the Python script
+# Run the lexer Python script with standard input.
+# This will execute the meme_lexer.py script using Python 3.
+# You may provide input through standard input (e.g., by piping a file).
 python3 meme_lexer.py
 
-# Check if the lexer execution was successful
+# Check if the lexer execution was successful.
+# The special variable $? holds the exit status of the last command executed.
+# If the exit status is 0, the script will print a success message.
 if [ $? -eq 0 ]; then
     echo "Lexical analysis completed successfully."
 else
+    # If the exit status is not 0, print an error message and exit with status 1 (failure).
     echo "Error occurred during lexical analysis."
     exit 1
 fi

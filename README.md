@@ -90,9 +90,19 @@ STRING: Represents string literals like "we all love animals", "of course".
 
 OP: Represents operators, in this case, just x.
 
-Running Everything:
+
+
+
+How to Running Everything:
 
 make program an executable: chmod +x run_meme_lexer.sh
 
 this is how to run the lexer with shell script:
 ./run_meme_lexer.sh
+
+
+The meme_lexer.py has all 5 sample_input cases with one showing have errors are handled. When running the executable, the output ie tokenization is printed for each sample_input case
+
+The Sample_meme_code.txt just hold the sample_inputs that as used in the meme_lexer.py.
+
+The scanner.sh is an old shell script that we used for testing but is not used for the final run.
