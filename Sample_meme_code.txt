@@ -60,17 +60,13 @@ create meme
     count 15
 save images
 
-#Sample input 5
+#Sample input 5 (should result in error)
 
 create meme
-    background yellow
-    load pictures sunflowers field sky
-    size 1280 x 720
-    border thick
-        color
-    style mosaic
-    text "summer fun"
-        placement middle
-        overlay no
-    count 30
+    background green
+    load pictures cat dog tree
+    size 1024 / 768
+    border dashed
+    style grid
 save images
+
