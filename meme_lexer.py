@@ -5,7 +5,7 @@ class Scanner:
         self.current_state = "Start"
         self.keywords = {"create", "meme", "background", "load", "size", "border", "style", "text", 
                          "placement", "overlay", "count", "save", "images"}
-        self.operators = {"x"}
+        self.operators = {"x"}  # Add x as an operator
         self.delimiters = {" ", "\n"}
     
     def scan(self):
@@ -15,16 +15,20 @@ class Scanner:
             
             if self.current_state == "Start":
                 if char.isalpha():  # Start of keyword or identifier
-                    self.current_state = "Keyword/Identifier"
                     start_index = index
                     while index < len(self.source_code) and (self.source_code[index].isalpha() or self.source_code[index].isdigit() or self.source_code[index] == '_'):
                         index += 1
                     value = self.source_code[start_index:index]
-                    token_type = "KEYWORD" if value in self.keywords else "ID"
-                    self.tokens.append((token_type, value))
+                    
+                    # Check if it's an operator like 'x'
+                    if value in self.operators:
+                        self.tokens.append(("OP", value))
+                    else:
+                        token_type = "KEYWORD" if value in self.keywords else "ID"
+                        self.tokens.append((token_type, value))
+                    
                     self.current_state = "Start"
                 elif char.isdigit():  # Start of number
-                    self.current_state = "Number"
                     start_index = index
                     while index < len(self.source_code) and self.source_code[index].isdigit():
                         index += 1
@@ -32,7 +36,6 @@ class Scanner:
                     self.tokens.append(("INT", value))
                     self.current_state = "Start"
                 elif char == '"':  # Start of string literal
-                    self.current_state = "String"
                     start_index = index + 1
                     index += 1
                     while index < len(self.source_code) and self.source_code[index] != '"':
