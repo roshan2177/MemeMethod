@@ -119,3 +119,5 @@ Delimiters: Handles spaces and newlines for separating tokens.
 Error Handling: Catches unexpected characters as lexical errors.
 Example Inputs:
 Several sample meme generation scripts are provided, including parameters for background color, image loading, text placement, and more. The Scanner class converts these scripts into tokens for further processing.
+
+you can see roshan's commits on the main and zakiy's commit through the forked repo.
