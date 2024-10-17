@@ -106,3 +106,16 @@ The meme_lexer.py has all 5 sample_input cases with one showing have errors are 
 The Sample_meme_code.txt just hold the sample_inputs that as used in the meme_lexer.py.
 
 The scanner.sh is an old shell script that we used for testing but is not used for the final run.
+
+
+How our scanner works: 
+
+This project contains a simple Python-based lexical scanner for a meme generation language. The Scanner class reads and tokenizes the source code, identifying keywords, operators, integers, and string literals from a provided meme creation script. The scanner processes commands such as create meme, load pictures, size, text, and save images to facilitate meme customization, including text placement, image loading, and overlay options.
+
+Features:
+Keywords: Recognizes commands like create, meme, background, load, size, text, save, etc.
+Operators: Identifies operators such as x for dimensions.
+Delimiters: Handles spaces and newlines for separating tokens.
+Error Handling: Catches unexpected characters as lexical errors.
+Example Inputs:
+Several sample meme generation scripts are provided, including parameters for background color, image loading, text placement, and more. The Scanner class converts these scripts into tokens for further processing.
