@@ -95,7 +95,4 @@ Running Everything:
 make program an executable: chmod +x run_meme_lexer.sh
 
 this is how to run the lexer with shell script:
-./run_meme_lexer.sh <sample_input.txt>
-
-such that
-./run_meme_lexer.sh Sample_meme_code.txt
+./run_meme_lexer.sh
