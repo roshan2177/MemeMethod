@@ -1,3 +1,6 @@
+import json
+import sys
+
 class Scanner:
     def __init__(self, source_code):
         # Initialize the scanner with the source code input
@@ -75,7 +78,6 @@ class Scanner:
         # Return the list of tokens after scanning is complete
         return self.tokens
 
-# Sample input 1: A script to create a meme with various parameters
 sample_input1 = """
 create meme
     background blue
@@ -94,67 +96,6 @@ create meme
 save images
 """
 
-# Sample input 2: Another meme creation with different parameters
-sample_input2 = """
-create meme
-    background black
-    load pictures stars moon
-    size 1920 x 1080
-    border dashed
-        color
-    style panorama
-    text "night sky beauty"
-        placement center
-        overlay no
-    count 5
-save images
-"""
-
-# Sample input 3: Meme creation with a grid style and multiple images
-sample_input3 = """
-create meme
-    background white
-    load pictures car bike road
-    size 640 x 480
-    border none
-    style grid
-    text "on the go"
-        placement top-right
-        overlay yes
-    text "fast life"
-        placement bottom-right
-        overlay no
-    count 20
-save images
-"""
-
-# Sample input 4: A nature-themed meme creation
-sample_input4 = """
-create meme
-    background green
-    load pictures tree river mountain
-    size 1024 x 768
-    border solid
-        color
-    style landscape
-    text "nature's beauty"
-        placement bottom
-        overlay yes
-    count 15
-save images
-"""
-
-# Sample input 5: A simpler meme creation without text
-sample_input5 = """
-create meme
-    background green
-    load pictures cat dog tree
-    size 1024 / 768
-    border dashed
-    style grid
-save images
-"""
-
 # Function to run the scanner on a sample input and print the tokens
 def run_sample(input_text, sample_number):
     print(f"\nSample {sample_number} Input:")
@@ -170,7 +111,3 @@ def run_sample(input_text, sample_number):
 
 # Run all sample inputs through the scanner and print tokens
 run_sample(sample_input1, 1)
-run_sample(sample_input2, 2)
-run_sample(sample_input3, 3)
-run_sample(sample_input4, 4)
-run_sample(sample_input5, 5)
