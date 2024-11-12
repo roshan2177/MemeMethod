@@ -28,17 +28,28 @@ awk -v prefix="sample_part" '
 }
 ' "$INPUT_FILE"
 
-# Loop through each generated sample_part file and run the lexer on it
+# Loop through each generated sample_part file and run the lexer and parser on it
 for PART in sample_part*.txt; do
     echo "Processing $PART..."
-    # Run the lexer Python script on the current part
-    python3 meme_lexer.py "$PART"
+
+    # Run the lexer (meme_lexer.py)
+    python3 meme_lexer.py "$PART" > lexer_output.txt
 
     # Check if the lexer execution was successful
     if [ $? -eq 0 ]; then
         echo "Lexical analysis for $PART completed successfully."
     else
         echo "Error occurred during lexical analysis for $PART."
+        exit 1
+    fi
+
+    # Run the parser (meme_parser.py) and display the AST
+    echo "Running parser for $PART..."
+    python3 meme_parser.py "$PART"
+    if [ $? -eq 0 ]; then
+        echo "Syntax analysis for $PART completed successfully."
+    else
+        echo "Error occurred during syntax analysis for $PART."
         exit 1
     fi
 
