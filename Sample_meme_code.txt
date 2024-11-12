@@ -69,4 +69,3 @@ create meme
     border dashed
     style grid
 save images
-
