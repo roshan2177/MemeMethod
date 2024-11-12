@@ -15,16 +15,33 @@ if [ ! -f "$INPUT_FILE" ]; then
     exit 1
 fi
 
-# Run the lexer Python script with the input file
-# with the lexer script is named 'meme_lexer.py'
-# and the input file is passed as a command-line argument
-python3 meme_lexer.py "$INPUT_FILE"
+# Use awk to split the file by each "#Sample" comment line
+awk -v prefix="sample_part" '
+/^#Sample/ {
+    # Close previous part file and increment part counter
+    if (out) close(out)
+    out = sprintf("%s%d.txt", prefix, ++count)
+}
+{
+    # Write each line to the current part file
+    if (out) print > out
+}
+' "$INPUT_FILE"
 
-# Check if the lexer execution was successful
-if [ $? -eq 0 ]; then
-    echo "Lexical analysis completed successfully."
-else
-    echo "Error occurred during lexical analysis."
-    exit 1
-fi
+# Loop through each generated sample_part file and run the lexer on it
+for PART in sample_part*.txt; do
+    echo "Processing $PART..."
+    # Run the lexer Python script on the current part
+    python3 meme_lexer.py "$PART"
 
+    # Check if the lexer execution was successful
+    if [ $? -eq 0 ]; then
+        echo "Lexical analysis for $PART completed successfully."
+    else
+        echo "Error occurred during lexical analysis for $PART."
+        exit 1
+    fi
+
+    # Clean up by removing the temporary split file
+    rm "$PART"
+done
