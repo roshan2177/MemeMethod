@@ -1,3 +1,4 @@
+# Lexer code
 import sys
 
 class Scanner:
@@ -5,6 +6,7 @@ class Scanner:
         self.source_code = source_code
         self.tokens = []
         self.current_state = "Start"
+        self.lexical_error = False
         self.keywords = {"create", "meme", "background", "load", "size", "border", "style", "text", 
                          "placement", "overlay", "count", "save", "images"}
         self.operators = {"x"}
@@ -65,8 +67,11 @@ class Scanner:
                 else:
                     self.current_state = "Error"
                     print(f"Lexical Error: Unexpected character '{char}'")
+                    self.lexical_error = True
                     break
-        return self.tokens
+        return self.tokens if not self.lexical_error else None
+
+# Parser code
 
 class Token:
     def __init__(self, type, value):
@@ -80,22 +85,22 @@ class ASTNode:
         self.children = children if children is not None else []
     
     def to_string(self, level=0):
+        prefix = "    " * level + "|-- " if level > 0 else ""
         token_type = self.token[0] if self.token else ""
         token_value = self.token[1] if self.token else "None"
-        if level == 0:
-            ret = f"{self.node_type}\n"
-        elif self.node_type in ["CreateCommand", "SaveCommand"]:
-            ret = "\t" + f"{self.node_type} {token_type}\n"
+        
+        if self.node_type in ["CreateCommand", "SaveCommand", "Program"]:
+            ret = f"{prefix}{self.node_type}\n"
         elif self.node_type in ["LoadPictures", "Size", "Border", "Text"]:
-            ret = "\t\t" + f"{self.node_type} {token_type}\n"        
+            ret = f"{prefix}{self.node_type}\n"        
         else:
-            ret = "\t\t" * level + f"{self.node_type} {token_type} ({token_value})\n"
+            ret = f"{prefix}{self.node_type} {token_type} ({token_value})\n"
         
         for child in self.children:
             if isinstance(child, ASTNode):
                 ret += child.to_string(level + 1)
             else:
-                ret += "\t" * (level + 1) + str(child) + "\n"
+                ret += "    " * (level + 1) + f"|-- {str(child)}\n"
                 
         return ret
 
@@ -214,7 +219,7 @@ class Parser:
     def previous(self):
         return self.tokens[self.current - 1]
 
-# Check if an input file was provided as an argument
+# Code to test Lexer and Parser
 if len(sys.argv) > 1:
     with open(sys.argv[1], 'r') as f:
         input_text = f.read()
@@ -240,12 +245,15 @@ else:
 # Create a scanner and tokenize the input
 scanner = Scanner(input_text)
 tokens = scanner.scan()
-print(tokens)
 
-# Parse the tokens and create the AST
-parser = Parser(tokens)
-ast = parser.parse()
+# Check if there was a lexical error
+if tokens is None:
+    print("Lexical analysis failed. Parsing will not proceed due to lexical errors.")
+else:
+    print("Tokens:", tokens)
+    # Parse the tokens and create the AST
+    parser = Parser(tokens)
+    ast = parser.parse()
+    print("Abstract Syntax Tree:")
+    print(ast)
 
-# Print the AST
-print("Abstract Syntax Tree:")
-print(ast)

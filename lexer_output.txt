@@ -1,0 +1,12 @@
+Lexical Error: Unexpected character '/'
+('KEYWORD', 'create')
+('KEYWORD', 'meme')
+('KEYWORD', 'background')
+('ID', 'green')
+('KEYWORD', 'load')
+('ID', 'pictures')
+('ID', 'cat')
+('ID', 'dog')
+('ID', 'tree')
+('KEYWORD', 'size')
+('INT', '1024')
