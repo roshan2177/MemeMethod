@@ -65,10 +65,10 @@ class Scanner:
                     index += 1
                     self.current_state = "Start"
                 else:
-                    self.current_state = "Error"
-                    print(f"Lexical Error: Unexpected character '{char}'")
+                    # Print an error and continue instead of breaking
+                    print(f"Lexical Error: Unexpected character '{char}' at index {index}")
                     self.lexical_error = True
-                    break
+                    index += 1  # Move to the next character to continue scanning
         return self.tokens if not self.lexical_error else None
 
 # Parser code
@@ -243,6 +243,7 @@ else:
     """
 
 # Create a scanner and tokenize the input
+print("Processing input...")
 scanner = Scanner(input_text)
 tokens = scanner.scan()
 
@@ -250,10 +251,16 @@ tokens = scanner.scan()
 if tokens is None:
     print("Lexical analysis failed. Parsing will not proceed due to lexical errors.")
 else:
+    print("Lexical analysis completed successfully.")
     print("Tokens:", tokens)
-    # Parse the tokens and create the AST
+    
+    # Run parser only if lexical analysis was successful
+    print("Running parser...")
     parser = Parser(tokens)
-    ast = parser.parse()
-    print("Abstract Syntax Tree:")
-    print(ast)
-
+    try:
+        ast = parser.parse()
+        print("Syntax analysis completed successfully.")
+        print("Abstract Syntax Tree:")
+        print(ast)
+    except SyntaxError as e:
+        print("Syntax analysis failed due to:", e)
