@@ -3,6 +3,12 @@ Teammates:
 Name: Zakiy Manigo UNI: ztm2106
 Name: Roshan Prakash UNI: rp3187
 
+VIDEO URL: https://youtu.be/EvZ3lWnSnZs
+
+
+
+
+
 Output of sample input from first draft of code:
 ('KEYWORD', 'create')
 ('KEYWORD', 'meme')
