@@ -111,7 +111,7 @@ The meme_lexer.py has all 5 sample_input cases with one showing have errors are 
 
 The Sample_meme_code.txt just hold the sample_inputs that as used in the meme_lexer.py.
 
-The scanner.sh is an old shell script that we used for testing but is not used for the final run.
+
 
 
 How our scanner works: 
