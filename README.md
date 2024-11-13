@@ -3,6 +3,8 @@ Teammates:
 Name: Zakiy Manigo UNI: ztm2106
 Name: Roshan Prakash UNI: rp3187
 
+UPDATED VIDEO URL (BETTER QUALITY): https://youtu.be/5MtNUdKvdgQ
+
 VIDEO URL: https://youtu.be/EvZ3lWnSnZs
 
 
