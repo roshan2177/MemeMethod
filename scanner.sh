@@ -33,7 +33,7 @@ for PART in sample_part*.txt; do
     echo "Running Lexer followed by Parser on $PART..."
     # Run the lexer (meme_lexer.py)
     if [ $? -eq 0 ]; then
-        python3 meme_lexer_parser.py "$PART"
+        python3 meme_lexer_parser_generation.py "$PART"
     else
         echo "Error occurred during lexical analysis for $PART. Skipping syntax analysis."
         exit 1
