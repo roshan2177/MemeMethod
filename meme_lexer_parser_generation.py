@@ -292,12 +292,16 @@ class CodeGenerator:
             text_content = node.children[0].token[1]
             placement = node.children[1].token[1] if len(node.children) > 1 else "default"
             overlay = node.children[2].token[1] if len(node.children) > 2 else "false"
+
+            # Convert overlay from "yes"/"no" to "true"/"false"
+            overlay_boolean = "true" if overlay.lower() == "yes" else "false"
+
             self.parameters["text"] = f'"{text_content}"'
             self.parameters["textPlacement"] = f'"{placement}"'
-            self.parameters["overlay"] = overlay
+            self.parameters["overlay"] = overlay_boolean
             self.java_code += f'        String text = "{text_content}";\n'
             self.java_code += f'        String textPlacement = "{placement}";\n'
-            self.java_code += f'        boolean overlay = {overlay};\n'
+            self.java_code += f'        boolean overlay = {overlay_boolean};\n'
         elif node.node_type == "Count":
             count = node.token[1]
             self.parameters["count"] = count
@@ -317,46 +321,40 @@ class CodeGenerator:
 
 
 
-# Main Program
+
+# Main program logic to handle multiple samples
 if len(sys.argv) > 1:
-    with open(sys.argv[1], 'r') as f:
+    input_file = sys.argv[1]
+    with open(input_file, 'r') as f:
         input_text = f.read()
+
+    # Create a scanner and tokenize the input
+    scanner = Scanner(input_text)
+    if scanner.scan():
+        print(f"Lexical analysis for {input_file} completed successfully.")
+        tokens = scanner.tokens
+
+        try:
+            # Parse the tokens and create the AST
+            parser = Parser(tokens)
+            ast = parser.parse()
+
+            # Print the AST
+            print(f"Abstract Syntax Tree for {input_file}:")
+            print(ast)
+
+            # Generate Java code
+            code_generator = CodeGenerator(ast)
+            java_code = code_generator.generate()
+
+            # Save the Java code to a uniquely named file
+            output_file = input_file.replace(".txt", ".java")
+            code_generator.write_to_file(output_file)
+            print(f"Generated Java file: {output_file}\n")
+
+        except SyntaxError as e:
+            print(f"Syntax error in {input_file}: {e}")
+    else:
+        print(f"Lexical analysis failed for {input_file}. No Java file generated.")
 else:
-    input_text = """
-    create meme
-        background green
-        load pictures cat dog tree
-        size 1024 / 768
-        border dashed
-        style grid
-    save images
-    """
-
-# Create a scanner and tokenize the input
-scanner = Scanner(input_text)
-if scanner.scan():
-    print("Lexical analysis completed successfully.")
-    tokens = scanner.tokens
-    print(tokens)
-
-    # Parse the tokens and create the AST
-    parser = Parser(tokens)
-    ast = parser.parse()
-
-    # Print the AST
-    print("Abstract Syntax Tree:")
-    print(ast)
-    print("Parsing completed successfully.")
-    print("\n")
-
-    # Generate Java code
-    code_generator = CodeGenerator(ast)
-    java_code = code_generator.generate()
-    print("Generated Java Code:")
-    print(java_code)
-
-    # Write Java code to file
-    code_generator.write_to_file("GeneratedMemeProgram.java")
-
-else:
-    print("Lexical analysis failed due to errors.")
+    print("No input file provided.")

@@ -30,14 +30,11 @@ awk -v prefix="sample_part" '
 
 # Loop through each generated sample_part file and run the lexer and parser on it
 for PART in sample_part*.txt; do
-    echo "Running Lexer followed by Parser on $PART..."
-    # Run the lexer (meme_lexer.py)
-    if [ $? -eq 0 ]; then
-        python3 meme_lexer_parser_generation.py "$PART"
-    else
-        echo "Error occurred during lexical analysis for $PART. Skipping syntax analysis."
-        exit 1
-    fi
+    echo "Processing $PART..."
+    python3 meme_lexer_parser_generation.py "$PART"
 
-    rm "$PART"
+    # Remove processed sample part file
+    rm -f "$PART"
 done
+
+echo "Processing complete."
