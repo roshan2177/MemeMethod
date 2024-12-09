@@ -3,7 +3,18 @@ Roshan Prakash UNI: rp3187
 
 ### README.txt
 
+What we ran for assignment 3:
+
+./scanner.sh sample_meme_code.txt
+javac sample_part1.java(replace with whichever file you want to test)
+java sample_part1
+
+
+
+
 ---
+For part 3 we worked on the same laptop for some of the parts, and ran git reset and git push origin main --force so some of our commits from part 2 and on may be gone. 
+
 
 # **Meme Generation Program**
 

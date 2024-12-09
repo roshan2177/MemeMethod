@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class GeneratedMemeProgram {
+public class sample_part4 {
     public static void main(String[] args) {
         System.out.println("Creating a meme...");
         String background = "green";

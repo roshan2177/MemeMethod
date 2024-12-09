@@ -71,10 +71,6 @@ class Scanner:
                     break
         return not self.error_occurred  # Return success status
 
-
-
-
-
 # Parsing Code Logic
 class Token:
     def __init__(self, type, value):
@@ -109,6 +105,7 @@ class ASTNode:
 
     def __repr__(self):
         return self.to_string()
+
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -222,8 +219,9 @@ class Parser:
         return self.tokens[self.current - 1]
 
 class CodeGenerator:
-    def __init__(self, ast):
+    def __init__(self, ast, file_name):
         self.ast = ast
+        self.file_name = file_name
         self.java_code = ""
         self.parameters = {
             "background": "null",
@@ -241,23 +239,19 @@ class CodeGenerator:
 
     def generate(self):
         self.java_code += "import java.util.*;\n\n"
-        self.java_code += "public class GeneratedMemeProgram {\n"
+        self.java_code += f"public class {self.file_name} {{\n"
         self.java_code += "    public static void main(String[] args) {\n"
         self.java_code += '        System.out.println("Creating a meme...");\n'
 
         for child in self.ast.children:
             self.process_node(child)
 
-        # Call save_images method before program ends
         self.java_code += "        save_images(background, pictures, width, height, borderStyle, borderColor, style, "
         self.java_code += "text, textPlacement, overlay, count);\n"
-
         self.java_code += "        System.out.println(\"Meme generation completed!\");\n"
         self.java_code += "    }\n\n"
 
-        # Define save_images method
         self.java_code += self.generate_save_images_method()
-
         self.java_code += "}\n"
         return self.java_code
 
@@ -292,8 +286,6 @@ class CodeGenerator:
             text_content = node.children[0].token[1]
             placement = node.children[1].token[1] if len(node.children) > 1 else "default"
             overlay = node.children[2].token[1] if len(node.children) > 2 else "false"
-
-            # Convert overlay from "yes"/"no" to "true"/"false"
             overlay_boolean = "true" if overlay.lower() == "yes" else "false"
 
             self.parameters["text"] = f'"{text_content}"'
@@ -319,36 +311,29 @@ class CodeGenerator:
         with open(filename, 'w') as f:
             f.write(self.java_code)
 
-
-
-
 # Main program logic to handle multiple samples
 if len(sys.argv) > 1:
     input_file = sys.argv[1]
     with open(input_file, 'r') as f:
         input_text = f.read()
 
-    # Create a scanner and tokenize the input
     scanner = Scanner(input_text)
     if scanner.scan():
         print(f"Lexical analysis for {input_file} completed successfully.")
         tokens = scanner.tokens
 
         try:
-            # Parse the tokens and create the AST
             parser = Parser(tokens)
             ast = parser.parse()
 
-            # Print the AST
             print(f"Abstract Syntax Tree for {input_file}:")
             print(ast)
 
-            # Generate Java code
-            code_generator = CodeGenerator(ast)
+            file_name = input_file.replace(".txt", "")
+            code_generator = CodeGenerator(ast, file_name)
             java_code = code_generator.generate()
 
-            # Save the Java code to a uniquely named file
-            output_file = input_file.replace(".txt", ".java")
+            output_file = f"{file_name}.java"
             code_generator.write_to_file(output_file)
             print(f"Generated Java file: {output_file}\n")
 
