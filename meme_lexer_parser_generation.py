@@ -231,11 +231,14 @@ class CodeGenerator:
             "borderStyle": "null",
             "borderColor": "null",
             "style": "null",
-            "text": "null",
-            "textPlacement": "null",
-            "overlay": "false",
             "count": 0,
         }
+        self.dynamic_parameters = {
+            "text": [],
+            "textPlacement": [],
+            "overlay": [],
+        }
+        self.text_count = 0
 
     def generate(self):
         self.java_code += "import java.util.*;\n\n"
@@ -246,8 +249,13 @@ class CodeGenerator:
         for child in self.ast.children:
             self.process_node(child)
 
-        self.java_code += "        save_images(background, pictures, width, height, borderStyle, borderColor, style, "
-        self.java_code += "text, textPlacement, overlay, count);\n"
+        # Adding all dynamically generated parameters to the function call
+        save_images_call = "save_images(background, pictures, width, height, borderStyle, borderColor, style"
+        for i in range(len(self.dynamic_parameters["text"])):
+            save_images_call += f", text{i+1}, textPlacement{i+1}, overlay{i+1}"
+        save_images_call += ", count);"
+
+        self.java_code += f"        {save_images_call}\n"
         self.java_code += "        System.out.println(\"Meme generation completed!\");\n"
         self.java_code += "    }\n\n"
 
@@ -283,17 +291,25 @@ class CodeGenerator:
             self.parameters["style"] = f'"{style_value}"'
             self.java_code += f'        String style = "{style_value}";\n'
         elif node.node_type == "Text":
+            self.text_count += 1
             text_content = node.children[0].token[1]
             placement = node.children[1].token[1] if len(node.children) > 1 else "default"
             overlay = node.children[2].token[1] if len(node.children) > 2 else "false"
             overlay_boolean = "true" if overlay.lower() == "yes" else "false"
 
-            self.parameters["text"] = f'"{text_content}"'
-            self.parameters["textPlacement"] = f'"{placement}"'
-            self.parameters["overlay"] = overlay_boolean
-            self.java_code += f'        String text = "{text_content}";\n'
-            self.java_code += f'        String textPlacement = "{placement}";\n'
-            self.java_code += f'        boolean overlay = {overlay_boolean};\n'
+            # Generate unique variable names
+            text_var = f"text{self.text_count}"
+            placement_var = f"textPlacement{self.text_count}"
+            overlay_var = f"overlay{self.text_count}"
+
+            # Save parameters dynamically
+            self.dynamic_parameters["text"].append(text_var)
+            self.dynamic_parameters["textPlacement"].append(placement_var)
+            self.dynamic_parameters["overlay"].append(overlay_var)
+
+            self.java_code += f'        String {text_var} = "{text_content}";\n'
+            self.java_code += f'        String {placement_var} = "{placement}";\n'
+            self.java_code += f'        boolean {overlay_var} = {overlay_boolean};\n'
         elif node.node_type == "Count":
             count = node.token[1]
             self.parameters["count"] = count
@@ -301,8 +317,12 @@ class CodeGenerator:
 
     def generate_save_images_method(self):
         method = "    public static void save_images(String background, List<String> pictures, int width, int height, "
-        method += "String borderStyle, String borderColor, String style, String text, String textPlacement, "
-        method += "boolean overlay, int count) {\n"
+        method += "String borderStyle, String borderColor, String style"
+        
+        # Dynamically generate parameters for texts, placements, and overlays
+        for i in range(len(self.dynamic_parameters["text"])):
+            method += f", String text{i+1}, String textPlacement{i+1}, boolean overlay{i+1}"
+        method += ", int count) {\n"
         method += "        // Add logic to generate and save images here.\n"
         method += "    }\n\n"
         return method
@@ -310,6 +330,7 @@ class CodeGenerator:
     def write_to_file(self, filename):
         with open(filename, 'w') as f:
             f.write(self.java_code)
+
 
 # Main program logic to handle multiple samples
 if len(sys.argv) > 1:
