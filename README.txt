@@ -10,6 +10,9 @@ javac sample_part1.java(replace with whichever file you want to test)
 java sample_part1
 
 
+Programming Assignment 3 Video: https://youtu.be/OEw1hR7519E
+
+Programming Assignment 2 Video: https://youtu.be/5MtNUdKvdgQ
 
 
 ---
